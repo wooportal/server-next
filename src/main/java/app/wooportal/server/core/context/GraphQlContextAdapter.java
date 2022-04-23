@@ -47,7 +47,7 @@ public class GraphQlContextAdapter implements ApiContextAdapter {
     if (context != null && !context.isEmpty()) {
       return context.get(0).getSelectionSet().getSelectionsOfType(Field.class);
     }
-    throw new RuntimeException("No single read context found");
+    return null;
   }
   
   public List<Field> getMultiReadContext() {
@@ -56,7 +56,7 @@ public class GraphQlContextAdapter implements ApiContextAdapter {
         return selection.getSelectionSet().getSelectionsOfType(Field.class); 
       }
     }
-    throw new RuntimeException("No multi read context found");
+    return null;
   }
   
   public List<Field> getReadContext() {

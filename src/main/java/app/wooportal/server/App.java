@@ -73,11 +73,11 @@ public class App {
     return connector -> connector.setAsyncTimeout(180000);
   }
 
-  @Bean
-  public ExtensionProvider<GeneratorConfiguration, ResolverInterceptorFactory> test() {
-    return (c, r) -> {
-      r.add(params -> List.of(new ExceptionResolverInterceptor(errorMessageService)));
-      return r;
-    };
-  }
+//  @Bean
+//  public ExtensionProvider<GeneratorConfiguration, ResolverInterceptorFactory> test() {
+//    return (c, r) -> {
+//      r.add(params -> List.of(new ExceptionResolverInterceptor(errorMessageService)));
+//      return r;
+//    };
+//  }
 }

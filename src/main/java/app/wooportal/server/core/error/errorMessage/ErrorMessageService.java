@@ -9,6 +9,7 @@ import app.wooportal.server.core.error.exception.InvalidPasswordResetException;
 import app.wooportal.server.core.error.exception.InvalidTokenException;
 import app.wooportal.server.core.error.exception.InvalidVerificationException;
 import app.wooportal.server.core.error.exception.NotFoundException;
+import app.wooportal.server.core.error.exception.XmppException;
 import app.wooportal.server.core.repository.DataRepository;
 
 @Service
@@ -49,6 +50,10 @@ public class ErrorMessageService extends DataService<ErrorMessageEntity, ErrorMe
     
     if (e instanceof NotFoundException) {
       return "Inhalt(e) konnte(n) nicht gefunden werden. Probiere es mit anderen Eingaben.";
+    }
+    
+    if (e instanceof XmppException) {
+      return "Chat aktuell nicht möglich. Bitte App neu starten und erneut probieren.";
     }
     
     this.errorMailService.sendErrorMail(e);

@@ -1,7 +1,5 @@
 package app.wooportal.server.core.security.filter;
 
-import app.wooportal.server.core.security.components.token.TokenService;
-import app.wooportal.server.core.security.services.JwtUserDetailsService;
 import java.io.IOException;
 import java.util.Collections;
 import javax.servlet.FilterChain;
@@ -12,21 +10,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import app.wooportal.server.core.security.components.token.TokenService;
+import app.wooportal.server.core.security.services.JwtUserDetailsService;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-  /** The jwt user details service. */
   private final JwtUserDetailsService jwtUserDetailsService;
 
   private final TokenService tokenService;
   
-  /**
-   * Instantiates a new jwt authorization filter.
-   *
-   * @param authManager the auth manager
-   * @param jwtUserDetailsService the jwt user details service
-   * @param tokenService the token service
-   */
   public JwtAuthorizationFilter(
       AuthenticationManager authManager,
       JwtUserDetailsService jwtUserDetailsService, 

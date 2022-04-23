@@ -61,7 +61,8 @@ public class UserSetup {
         createMediaService(uploadData),
         createRoleService(roleData),
         createPasswordResetData(passwordResetData),
-        createVerificationData(verificationData));
+        createVerificationData(verificationData),
+        null);
     service.setGraph(new GraphBuilder<>(entityManager));
     service.setContext(new TestApiContextAdapter());
     api = new UserApi(service);

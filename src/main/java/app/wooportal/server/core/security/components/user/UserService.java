@@ -11,6 +11,7 @@ import app.wooportal.server.core.error.exception.AlreadyVerifiedException;
 import app.wooportal.server.core.error.exception.InvalidPasswordResetException;
 import app.wooportal.server.core.error.exception.NotFoundException;
 import app.wooportal.server.core.media.base.MediaService;
+import app.wooportal.server.core.messaging.XmppService;
 import app.wooportal.server.core.repository.DataRepository;
 import app.wooportal.server.core.error.exception.InvalidVerificationException;
 import app.wooportal.server.core.security.components.passwordReset.PasswordResetEntity;
@@ -27,6 +28,8 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
   
   private final RoleService roleService;
   
+  private final XmppService xmppService;
+  
   public UserService(
       DataRepository<UserEntity> repo,
       UserPredicateBuilder predicate,
@@ -34,11 +37,13 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
       MediaService mediaService,
       RoleService roleService,
       PasswordResetService passwordResetService,
-      VerificationService verificationService) {
+      VerificationService verificationService,
+      XmppService xmppService) {
     super(repo, predicate);
     
     this.bcryptPasswordEncoder = encoder;
     this.roleService = roleService;
+    this.xmppService = xmppService;
     addService("passwordReset", passwordResetService);
     addService("profilePicture", mediaService);
     addService("uploads", mediaService);
@@ -74,6 +79,16 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
     
     if (entity.getId() == null || entity.getId().isBlank()) {
       newEntity.setVerification(new VerificationEntity());
+    }
+  }
+  
+  @Override
+  public void postSave(
+      UserEntity entity,
+      UserEntity newEntity, 
+      JsonNode context) {
+    if (newEntity.getId() == null) {
+      xmppService.createAccount(entity);
     }
   }
   

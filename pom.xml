@@ -39,6 +39,7 @@
 		<jsoup.version>1.14.3</jsoup.version>
 		<oauth.version>3.8.1</oauth.version>
 		<openhtmltopdf.version>1.0.10</openhtmltopdf.version>
+		<smack.version>4.4.5</smack.version>
 		<twelvemonkeys.imageio>3.5</twelvemonkeys.imageio>
 	</properties>
 
@@ -114,6 +115,26 @@
 			<version>${graphql-starter.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-core</artifactId>
+			<version>${smack.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-tcp</artifactId>
+			<version>${smack.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-extensions</artifactId>
+			<version>${smack.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.igniterealtime.smack</groupId>
+			<artifactId>smack-im</artifactId>
+			<version>${smack.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.imgscalr</groupId>
 			<artifactId>imgscalr-lib</artifactId>
 			<version>${imgscalr.version}</version>
@@ -180,6 +201,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
