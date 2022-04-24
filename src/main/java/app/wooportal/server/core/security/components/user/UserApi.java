@@ -75,6 +75,11 @@ public class UserApi extends CrudApi<UserEntity, UserService> {
     return service.createVerification(mailAddress);
   }
   
+  @GraphQLMutation(name = "approve")
+  public Boolean approve(String userId) {
+    return service.approve(userId);
+  }
+  
   @GraphQLMutation(name = "verify")
   public UserEntity verify(String key) {
     return service.verify(key);

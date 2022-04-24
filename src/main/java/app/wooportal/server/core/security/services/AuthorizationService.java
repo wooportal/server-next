@@ -1,6 +1,7 @@
 package app.wooportal.server.core.security.services;
 
 import java.util.Collections;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,36 +22,47 @@ public class AuthorizationService {
     this.userDetailsService = userDetailsService;
   }
 
-
-  public UserEntity getCurrentUser() {
+  public Optional<UserEntity> getUserFromSecurityContext() {
     if (SecurityContextHolder.getContext().getAuthentication()
         .getPrincipal() instanceof JwtUserDetails) {
       JwtUserDetails jwtUserDetails =
           (JwtUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       if (jwtUserDetails != null && jwtUserDetails.getUser() != null) {
-        return jwtUserDetails.getUser();
+        return Optional.of(jwtUserDetails.getUser());
       }
     }
-    return null;
+    return Optional.empty();
+  }
+  
+  public Optional<UserEntity> getValidUserFromToken(String jwtToken) {
+    var userDetails = retrieveUserDetailsFromToken(jwtToken);
+    return userDetails.isPresent()
+      ? Optional.ofNullable(userDetails.get().getUser())
+      : Optional.empty();
   }
 
-  public UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+  public Optional<UsernamePasswordAuthenticationToken> getAuthenticationToken(HttpServletRequest request) {
     if (request != null) {
       try {
         String jwtToken = request.getHeader("Authorization");
-        if (jwtToken != null) {
-          String username = tokenService.verifyAccess(jwtToken).getSubject();
-          if (username != null) {
-            var userDetails = userDetailsService.loadUserByUsername(username);
-            if (userDetails != null) {
-              return new UsernamePasswordAuthenticationToken(
-                  userDetails, null, Collections.emptyList()); 
-            }
-          }
+        var userDetails = retrieveUserDetailsFromToken(jwtToken);
+        if (userDetails.isPresent()) {
+          return Optional.of(new UsernamePasswordAuthenticationToken(
+              userDetails.get(), null, Collections.emptyList())); 
         }
       } catch (Exception ignored) { }
     }
     return null;
+  }
+
+  private Optional<JwtUserDetails> retrieveUserDetailsFromToken(String jwtToken) {
+    if (jwtToken != null) {
+      String username = tokenService.verifyAccess(jwtToken).getSubject();
+      if (username != null) {
+        return Optional.ofNullable(userDetailsService.loadUserByUsername(username));
+      }
+    }
+    return Optional.empty();
   }
 
 }

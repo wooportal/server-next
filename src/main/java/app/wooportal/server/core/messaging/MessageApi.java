@@ -7,8 +7,9 @@ import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
+import app.wooportal.server.core.error.exception.InvalidTokenException;
 import app.wooportal.server.core.error.exception.XmppException;
-import app.wooportal.server.core.security.components.token.TokenService;
+import app.wooportal.server.core.security.services.AuthorizationService;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLSubscription;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -17,23 +18,26 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 @GraphQLApi
 public class MessageApi {
   
-  private final TokenService tokenService;
+  private final AuthorizationService authService;
   
   private final XmppService xmppService;
   
   private static final Map<String, XMPPTCPConnection> CONNECTIONS2 = new HashMap<>();
   
   public MessageApi(
-      TokenService tokenService,
+      AuthorizationService authService,
       XmppService xmppClient) {
-    this.tokenService = tokenService;
+    this.authService = authService;
     this.xmppService = xmppClient;
   }
 
   @GraphQLSubscription
   public Publisher<MessageDto> incomingMessages(String token) {
-    tokenService.verifyAccess(token);
-    return xmppService.addMessageListener();
+    var user = authService.getValidUserFromToken(token);
+    if (user.isEmpty()) {
+      throw new InvalidTokenException("Invalid token, either user doesn't exist or token invalid", token);
+    }
+    return xmppService.addMessageListener(user.get());
   }
   
   @GraphQLMutation

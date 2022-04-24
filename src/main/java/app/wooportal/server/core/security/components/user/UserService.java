@@ -82,16 +82,6 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
     }
   }
   
-  @Override
-  public void postSave(
-      UserEntity entity,
-      UserEntity newEntity, 
-      JsonNode context) {
-    if (newEntity.getId() == null) {
-      xmppService.createAccount(entity);
-    }
-  }
-  
   public Boolean createPasswordReset(String mailAddress) {
     var result = repo.findOne(predicate.withLoginName(mailAddress));
     
@@ -139,6 +129,17 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
     copy.setVerification(new VerificationEntity());
     persist(result.get(), copy, createContext("verification"));
     return true;
+  }
+  
+  public Boolean approve(String userId) {
+    var user = getById(userId);
+    if (user.isPresent()) {
+      user.get().getRoles().add(roleService.getVerifiedRole());
+      var saved = repo.save(user.get());
+      xmppService.createAccount(saved);
+      return true;
+    }
+    return false;
   }
 
   public UserEntity verify(String key) {

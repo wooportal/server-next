@@ -1,6 +1,7 @@
 package app.wooportal.server.core.security.filter;
 
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,8 @@ import app.wooportal.server.core.security.services.AuthorizationService;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
   private final AuthorizationService authService;
-  
-  public JwtAuthorizationFilter(
-      AuthenticationManager authManager,
+
+  public JwtAuthorizationFilter(AuthenticationManager authManager,
       AuthorizationService authService) {
     super(authManager);
     this.authService = authService;
@@ -32,10 +32,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
       return;
     }
 
-    UsernamePasswordAuthenticationToken authentication = authService.getAuthentication(req);
-    
-    if (authentication != null) {
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+    Optional<UsernamePasswordAuthenticationToken> authentication =
+        authService.getAuthenticationToken(req);
+
+    if (authentication.isPresent()) {
+      SecurityContextHolder.getContext().setAuthentication(authentication.get());
     }
 
     chain.doFilter(req, res);

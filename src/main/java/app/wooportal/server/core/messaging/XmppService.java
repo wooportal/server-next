@@ -15,7 +15,6 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jxmpp.jid.BareJid;
-import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -24,7 +23,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 import app.wooportal.server.core.error.exception.XmppException;
 import app.wooportal.server.core.security.components.user.UserEntity;
-import app.wooportal.server.core.security.services.AuthorizationService;
 import io.leangen.graphql.spqr.spring.util.ConcurrentMultiMap;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -35,7 +33,6 @@ import reactor.core.publisher.FluxSink;
 @EnableConfigurationProperties(XMPPProperties.class)
 public class XmppService {
   
-  private final AuthorizationService authService;
   private final XMPPProperties xmppProperties;
   private final XMPPMessageTransmitter xmppMessageTransmitter;
   private final ConcurrentMultiMap<String, FluxSink<MessageDto>> subscribers = new ConcurrentMultiMap<>();
@@ -77,8 +74,8 @@ public class XmppService {
     }
   }
 
-  public Publisher<MessageDto> addMessageListener() {
-    var connection = login(authService.getCurrentUser());
+  public Publisher<MessageDto> addMessageListener(UserEntity user) {
+    var connection = login(user);
     return Flux.create(
         subscriber -> subscribers.add(connection.getUser().getLocalpart().toString(),
             subscriber.onDispose(() -> subscribers
