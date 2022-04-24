@@ -21,18 +21,18 @@ public class DevelopmentConfiguration {
      this.xmppService = xmppService;
    }
    
-//   @PostConstruct
-//   public void postConstruct() {
-//     var result = userService.getRepo().findAll();
-//     
-//     if (result != null && !result.isEmpty()) {
-//       for (var entity : result) {
-//         try {
-//           xmppService.login(entity);
-//         } catch(Exception e) {
-//           
-//         }
-//       }
-//     }
-//   }
+   @PostConstruct
+   public void postConstruct() {
+     var result = userService.getRepo().findAll();
+     
+     if (result != null && !result.isEmpty()) {
+       for (var entity : result) {
+         try {
+           xmppService.createAccount(entity);
+         } catch(Exception e) {
+           
+         }
+       }
+     }
+   }
 }
