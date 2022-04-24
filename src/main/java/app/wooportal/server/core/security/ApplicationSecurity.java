@@ -15,27 +15,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import app.wooportal.server.core.security.components.token.TokenService;
 import app.wooportal.server.core.security.filter.JwtAuthorizationFilter;
+import app.wooportal.server.core.security.services.AuthorizationService;
 import app.wooportal.server.core.security.services.JwtUserDetailsService;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
-  private final JwtUserDetailsService userDetailsService;
+  private final AuthorizationService authService;
 
   private final BCryptPasswordEncoder bcryptPasswordEncoder;
-
-  private final TokenService tokenService;
+  
+  private final JwtUserDetailsService userDetailsService;
 
   public ApplicationSecurity(
-      JwtUserDetailsService jwtUserDetailsService,
-      BCryptPasswordEncoder encoder, 
-      TokenService tokenService) {
-    this.userDetailsService = jwtUserDetailsService;
+      AuthorizationService authService,
+      BCryptPasswordEncoder encoder,
+      JwtUserDetailsService userDetailsService) {
+    this.authService = authService;
     this.bcryptPasswordEncoder = encoder;
-    this.tokenService = tokenService;
+    this.userDetailsService = userDetailsService;
   }
 
   @Override
@@ -55,7 +55,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  @Profile("development")
+  @Profile(value = { "development", "local", "test" })
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
 
@@ -72,8 +72,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
   public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
     return new JwtAuthorizationFilter(
         authenticationManager(), 
-        userDetailsService, 
-        tokenService);
+        authService);
   }
   
   @Bean

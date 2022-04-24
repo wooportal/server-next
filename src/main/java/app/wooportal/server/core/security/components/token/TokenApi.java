@@ -36,10 +36,9 @@ public class TokenApi {
               new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList()))
           .getPrincipal();
 
-      var accessToken = tokenService.createAccessToken(jwtUserDetails);
-      var refreshToken = tokenService.createRefreshToken(jwtUserDetails);
-
-      return new TokenDto(accessToken, refreshToken);
+      return new TokenDto(
+          tokenService.createAccessToken(jwtUserDetails),
+          tokenService.createRefreshToken(jwtUserDetails));
     } catch (Exception e) {
       throw new BadCredentialsException(password);
     }
@@ -47,13 +46,11 @@ public class TokenApi {
 
   @GraphQLMutation(name = "refreshToken")
   public TokenDto refreshToken(String refreshToken) {
-    tokenService.verifyRefresh(refreshToken);
-
-    var username = tokenService.extractUsername(refreshToken);
-    var accessToken =
-        tokenService.createAccessToken(userDetailService.loadUserByUsername(username));
-
-    return new TokenDto(accessToken, refreshToken);
+    var decodedToken = tokenService.verifyRefresh(refreshToken);
+    return new TokenDto(
+        tokenService.createAccessToken(userDetailService.loadUserByUsername(
+            decodedToken.getSubject())),
+        refreshToken);
   }
 
 }
