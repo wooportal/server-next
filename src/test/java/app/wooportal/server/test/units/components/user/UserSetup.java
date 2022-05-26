@@ -53,7 +53,7 @@ public class UserSetup {
 
     var service = new UserService(new RepoService<UserEntity>(userData), new UserPredicateBuilder(),
         encoder, createMediaService(uploadData), createRoleService(roleData),
-        createPasswordResetData(passwordResetData), createVerificationData(verificationData), null);
+        createPasswordResetData(passwordResetData), createVerificationData(verificationData), null, null, null);
 
     service.setGraph(new GraphBuilder<>(entityManager));
     service.setContext(new TestApiContextAdapter());

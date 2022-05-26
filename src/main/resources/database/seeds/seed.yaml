@@ -153,6 +153,11 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   constraints:
+                    nullable: false
+                  name: evaluateCourse
+                  type: boolean                
+              - column:
+                  constraints:
                     unique: true
                   name: phone
                   type: VARCHAR(255)

@@ -55,6 +55,9 @@ public class UserEntity extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private CourseEntity course;
 
+  @Column(nullable = false)
+  private Boolean evaluateCourse;
+  
   @Column(unique = true, nullable = false)
   private String email;
 

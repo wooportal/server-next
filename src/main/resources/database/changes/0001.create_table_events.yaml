@@ -70,7 +70,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: image_id
+                  name: media_id
                   type: CHAR(36)
               - column:
                   constraints:
@@ -97,7 +97,7 @@ databaseChangeLog:
         - createIndex:
             columns:
               - column:
-                  name: image_id
+                  name: media_id
             indexName: idx_fkcf34zz8jp1v5o2vjly1u9l35s
             tableName: event_media
   - changeSet:
@@ -120,7 +120,7 @@ databaseChangeLog:
       author: codeschluss
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: image_id
+            baseColumnNames: media_id
             baseTableName: event_media
             constraintName: fkcf34zz8jp1v5o2vjly1u9l35s
             deferrable: false

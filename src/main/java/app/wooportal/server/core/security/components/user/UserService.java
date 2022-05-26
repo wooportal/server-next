@@ -6,7 +6,8 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
-import app.wooportal.server.components.group.course.CourseService;
+import app.wooportal.server.components.event.base.EventService;
+import app.wooportal.server.components.jobad.base.JobAdService;
 import app.wooportal.server.core.base.DataService;
 import app.wooportal.server.core.error.exception.AlreadyVerifiedException;
 import app.wooportal.server.core.error.exception.InvalidPasswordResetException;
@@ -19,6 +20,7 @@ import app.wooportal.server.core.security.components.passwordReset.PasswordReset
 import app.wooportal.server.core.security.components.role.RoleService;
 import app.wooportal.server.core.security.components.verification.VerificationEntity;
 import app.wooportal.server.core.security.components.verification.VerificationService;
+import app.wooportal.server.core.security.services.AuthorizationService;
 import app.wooportal.server.core.utils.ReflectionUtils;
 
 @Service
@@ -27,6 +29,9 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
   private final BCryptPasswordEncoder bcryptPasswordEncoder;
 
   private final RoleService roleService;
+  private final AuthorizationService authorizationService;
+  private final JobAdService jobAdService;
+  private final EventService eventService;
   
   public UserService(
       DataRepository<UserEntity> repo,
@@ -36,16 +41,21 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
       RoleService roleService,
       PasswordResetService passwordResetService,
       VerificationService verificationService,
-      CourseService courseService) {
+      AuthorizationService authorizationService,
+      JobAdService jobAdService,
+      EventService eventService) {
     super(repo, predicate);
 
     this.bcryptPasswordEncoder = encoder;
     this.roleService = roleService;
-    addService("course", courseService);
+    this.authorizationService = authorizationService;
+    this.jobAdService = jobAdService;
+    this.eventService = eventService;
     addService("passwordReset", passwordResetService);
     addService("profilePicture", mediaService);
     addService("uploads", mediaService);
     addService("verification", verificationService);
+    
   }
 
   @Override
@@ -76,8 +86,21 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
   }
   
   public Optional<UserEntity> addJobAdFavorite(String jobAdId) {
-    // TODO Auto-generated method stub
-    return null;
+    var currentUser = authorizationService.getCurrentUser();
+    if (currentUser.isPresent()) {
+      currentUser.get().getFavoriteJobAds().add(jobAdService.getById(jobAdId).get());
+      return Optional.of(repo.save(currentUser.get()));
+    }
+    return currentUser;
+  }
+  
+  public Optional<UserEntity> addEventFavorite(String eventId) {
+    var currentUser = authorizationService.getCurrentUser();
+    if (currentUser.isPresent()) {
+      currentUser.get().getFavoriteEvents().add(eventService.getById(eventId).get());
+      return Optional.of(repo.save(currentUser.get()));
+    }
+    return currentUser;
   }
   
   public Optional<UserEntity> approve(String userId) {
