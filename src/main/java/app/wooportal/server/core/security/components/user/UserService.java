@@ -28,11 +28,14 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
 
   private final RoleService roleService;
   
-
-
-  public UserService(DataRepository<UserEntity> repo, UserPredicateBuilder predicate,
-      BCryptPasswordEncoder encoder, MediaService mediaService, RoleService roleService,
-      PasswordResetService passwordResetService, VerificationService verificationService,
+  public UserService(
+      DataRepository<UserEntity> repo,
+      UserPredicateBuilder predicate,
+      BCryptPasswordEncoder encoder,
+      MediaService mediaService,
+      RoleService roleService,
+      PasswordResetService passwordResetService,
+      VerificationService verificationService,
       CourseService courseService) {
     super(repo, predicate);
 
@@ -70,6 +73,21 @@ public class UserService extends DataService<UserEntity, UserPredicateBuilder> {
     if (entity.getId() == null || entity.getId().isBlank()) {
       newEntity.setVerification(new VerificationEntity());
     }
+  }
+  
+  public Optional<UserEntity> addJobAddFavorite(String jobAdId) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
+  public Optional<UserEntity> approve(String userId) {
+    var user = getById(userId);
+    
+    if (user.isPresent()) {
+      user.get().getRoles().add(roleService.getVerifiedRole());
+      return Optional.of(repo.save(user.get()));
+    }
+    return user;
   }
 
   public Boolean createPasswordReset(String mailAddress) {

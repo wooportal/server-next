@@ -23,6 +23,7 @@ import app.wooportal.server.components.event.base.EventEntity;
 import app.wooportal.server.components.group.course.CourseEntity;
 import app.wooportal.server.components.jobad.base.JobAdEntity;
 import app.wooportal.server.components.message.participant.ParticipantEntity;
+import app.wooportal.server.components.push.notification.NotificationEntity;
 import app.wooportal.server.components.push.subscription.SubscriptionEntity;
 import app.wooportal.server.core.base.BaseEntity;
 import app.wooportal.server.core.media.base.MediaEntity;
@@ -75,7 +76,7 @@ public class UserEntity extends BaseEntity {
   
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   @EqualsAndHashCode.Exclude
-  private Set<AssignmentEntity> notifications;
+  private Set<NotificationEntity> notifications;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   @EqualsAndHashCode.Exclude

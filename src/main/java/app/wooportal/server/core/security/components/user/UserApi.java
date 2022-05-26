@@ -67,6 +67,18 @@ public class UserApi extends CrudApi<UserEntity, UserService> {
     return super.deleteOne(id);
   }
   
+  @GraphQLMutation(name = "addJobFavorite")
+  @AdminPermission
+  public Optional<UserEntity> addJobAdFavorite(String jobAdId) {
+    return service.addJobAddFavorite(jobAdId);
+  }
+  
+  @GraphQLMutation(name = "approveUser")
+  @AdminPermission
+  public Optional<UserEntity> approve(String userId) {
+    return service.approve(userId);
+  }
+  
   @GraphQLMutation(name = "sendPasswordReset")
   public Boolean forgetPassword(String mailAddress) {
     return service.createPasswordReset(mailAddress);
