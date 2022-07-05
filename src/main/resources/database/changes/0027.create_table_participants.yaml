@@ -82,7 +82,7 @@ databaseChangeLog:
             deferrable: false
             initiallyDeferred: false
             onUpdate: CASCADE
-            onDelete: SET NULL
+            onDelete: CASCADE
             referencedColumnNames: id
             referencedTableName: participants
             validate: true                               
