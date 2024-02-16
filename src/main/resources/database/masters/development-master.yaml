@@ -315,7 +315,9 @@ databaseChangeLog:
     - include:                 
         file: database/changes/0167.add_columns_contest.yaml 
     - include:                 
-        file: database/changes/0168.change_column_type_contests.yaml          
+        file: database/changes/0168.change_column_type_contests.yaml
+    - include:                 
+        file: database/changes/0169.add_column_plugin_translatables.yaml                   
              
                                    
     #Data section
@@ -354,7 +356,9 @@ databaseChangeLog:
     - include:
         file: database/datasets/0016.seed-data-contests.yaml  
     - include:
-        file: database/datasets/0017.add_labels_plugins.yaml                
+        file: database/datasets/0017.add_labels_plugins.yaml   
+    - include:
+        file: database/datasets/0018.add_short_description_plugins.yaml                      
         
      #Cleanups
     - include:

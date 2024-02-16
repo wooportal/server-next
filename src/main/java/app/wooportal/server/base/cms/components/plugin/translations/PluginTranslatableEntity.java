@@ -21,4 +21,6 @@ public class PluginTranslatableEntity extends TranslatableEntity<PluginEntity> {
   private static final long serialVersionUID = 1L;
 
   private String name;
+  
+  private String shortDescription;
 }

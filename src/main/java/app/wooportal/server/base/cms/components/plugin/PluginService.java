@@ -31,6 +31,7 @@ public class PluginService extends DataService<PluginEntity, PluginPredicateBuil
     super(repo, predicate);
    
     addService("menuItems", menuItemService);
+  
   }
   
   public Boolean changeActivation(String pluginId, Boolean active) {
@@ -43,9 +44,7 @@ public class PluginService extends DataService<PluginEntity, PluginPredicateBuil
       newPlugin.setActive(active);
       
       if (active == null || !active) {
-        newPlugin.getMenuItems().stream().forEach(menuItem -> {
-          menuItem.setParent(null);
-        });
+        newPlugin.setMenuItems(null);
       }
 
       save(newPlugin);

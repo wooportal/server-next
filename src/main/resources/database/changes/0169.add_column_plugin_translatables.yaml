@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - logicalFilePath: path_independent
+  - changeSet:
+      id: 0169.add_columns_plugin_translatables.1
+      author: codeschluss
+      changes:
+        - addColumn:
+            columns:
+              - column:               
+                  name: short_description
+                  type: TEXT
+            tableName: plugin_translatables
+            
+          
+            
+                                    

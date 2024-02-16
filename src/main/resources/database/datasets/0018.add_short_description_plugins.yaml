@@ -1,0 +1,187 @@
+databaseChangeLog:
+  - logicalFilePath: path_independent
+  - changeSet:
+      id: 0018.add_short_description_plugins.1
+      author: codeschluss
+      changes:
+        - sql:
+            comment: upddate plugins
+            splitStatements: true
+            sql:
+                /*!40101 SET character_set_client = utf8 */;
+                    
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Stories aus deiner Stadt"
+                WHERE l.locale = "de" AND
+                p.code = "articles";
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Stories from your city"
+                WHERE l.locale = "en" AND
+                p.code = "articles";
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Deine lokalen Veranstalter"
+                WHERE l.locale = "de" AND
+                p.code = "organisations";
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Your local organizers"
+                WHERE l.locale = "en" AND
+                p.code = "organisations";  
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Events in deiner Nähe"
+                WHERE l.locale = "de" AND
+                p.code = "events";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Events near you"
+                WHERE l.locale = "en" AND
+                p.code = "events";       
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Dein lokales Redaktionsteam"
+                WHERE l.locale = "de" AND
+                p.code = "authors";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Your local editorial team"
+                WHERE l.locale = "en" AND
+                p.code = "authors";     
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Finde Interessantes in deiner Nähe"
+                WHERE l.locale = "de" AND
+                p.code = "map";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Find interesting things near you"
+                WHERE l.locale = "en" AND
+                p.code = "map";    
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Verpasse kein Event"
+                WHERE l.locale = "de" AND
+                p.code = "calendar";    
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Don't miss an event"
+                WHERE l.locale = "en" AND
+                p.code = "calendar";     
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Sag uns deine Meinung"
+                WHERE l.locale = "de" AND
+                p.code = "surveys";                                                                                                                                                                    
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Tell us what you think"
+                WHERE l.locale = "en" AND
+                p.code = "surveys";    
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Zeig uns deine Talent"
+                WHERE l.locale = "de" AND
+                p.code = "contests";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Show us your talent"
+                WHERE l.locale = "en" AND
+                p.code = "contests";    
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Erzähl uns deine Story"
+                WHERE l.locale = "de" AND
+                p.code = "guestarticle";  
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Tell us your story"
+                WHERE l.locale = "en" AND
+                p.code = "guestarticle";       
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Sammlung digitaler Medien"
+                WHERE l.locale = "de" AND
+                p.code = "media";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Digital media collection"
+                WHERE l.locale = "en" AND
+                p.code = "media";       
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Dein lokaler Marktplatz"
+                WHERE l.locale = "de" AND
+                p.code = "deals"; 
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Your local marketplace"
+                WHERE l.locale = "en" AND
+                p.code = "deals";                
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Gib uns dein Feedback"
+                WHERE l.locale = "de" AND
+                p.code = "reports";   
+                
+                UPDATE plugin_translatables pt
+                join plugins p ON pt.parent_id = p.id 
+                join languages l ON pt.language_id = l.id
+                SET pt.short_description = "Give us your feedback"
+                WHERE l.locale = "en" AND
+                p.code = "reports";                                                                                                                                                                                           
+                                                
+                
+                
+
+                 
+                                                          
+                                                                                
+                 

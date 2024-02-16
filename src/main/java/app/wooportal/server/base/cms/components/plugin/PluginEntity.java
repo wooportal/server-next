@@ -34,6 +34,9 @@ public class PluginEntity extends BaseEntity {
   @Translatable
   private String name;
   
+  @Translatable
+  private String shortDescription;  
+  
   private Boolean released;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "plugin")
